@@ -1,9 +1,21 @@
 import express from 'express'
+import handlebars from 'express-handlebars'
 
 import routes from '../routes.js';
 
 const app = express();
 
+//* Handlebars setup
+app.engine('hbs', handlebars.engine({
+    extname: 'hbs',
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true
+    }
+}));
+app.set('view engine', 'hbs');
+app.set('views', './src/views');
+
+//* Express setup
 app.use(express.static('src/public'));  //* Static middleware - get public recources
 app.use(express.urlencoded({ extended: false }));  //* Body-parser - parse data in req.body
 app.use(routes);
