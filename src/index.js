@@ -1,5 +1,6 @@
-import express from 'express'
-import handlebars from 'express-handlebars'
+import express from 'express';
+import handlebars from 'express-handlebars';
+import mongoose from 'mongoose';
 
 import routes from '../routes.js';
 
