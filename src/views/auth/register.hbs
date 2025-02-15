@@ -1,3 +1,4 @@
+{{setTitle 'Register Page - Gaming Team'}}
 <main id="register">
     <!-- In case of error, you should display div with class "errorContainer" -->
     <!-- You can choose to display the first error or all of them (error message/s in your opinion) -->
@@ -12,9 +13,9 @@
         <h4>It's free and only takes a minute</h4>
         <form method="POST">
             <label>Username</label>
-            <input type="text" name="username" placeholder="Username..">
+            <input type="text" name="username" placeholder="Username.." value="{{userdata.username}}">
             <label>Email</label>
-            <input type="text" name="email" placeholder="Email..">
+            <input type="text" name="email" placeholder="Email.." value="{{userdata.email}}">
             <label>Password</label>
             <input type="password" name="password" placeholder="Password..">
             <label>Confirm Password</label>

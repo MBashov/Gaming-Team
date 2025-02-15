@@ -3,6 +3,7 @@ import handlebars from 'express-handlebars';
 import mongoose from 'mongoose';
 
 import routes from '../routes.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -20,6 +21,11 @@ app.engine('hbs', handlebars.engine({
     extname: 'hbs',
     runtimeOptions: {
         allowProtoPropertiesByDefault: true
+    },
+    helpers: {
+        setTitle(title) {
+            this.pageTitle = title;
+        }
     }
 }));
 app.set('view engine', 'hbs');
@@ -29,6 +35,7 @@ app.set('views', './src/views');
 app.use(express.static('src/public'));  //* Static middleware - get public recources
 app.use(express.urlencoded({ extended: false }));  //* Body-parser - parse data in req.body
 app.use(routes);
+app.use(cookieParser());
 
 
 app.listen(5000, () => console.log('Server started on port http://localhost:5000'));
