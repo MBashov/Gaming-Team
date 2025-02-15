@@ -1,8 +1,7 @@
 import bcrypr from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 import User from "../models/User.js";
-import { JWT_SECRET } from "../../config.js";
+import { genereteToken } from '../utils/authUtil.js';
 
 export default {
     async register(userData) {
@@ -16,7 +15,10 @@ export default {
             throw new Error("User with this email already exist");
         }
 
-        return User.create(userData);
+        const createdUser = await User.create(userData);
+        
+        const token = genereteToken(createdUser);
+        return token;
     },
 
     async login(email, password) {
@@ -31,14 +33,7 @@ export default {
             throw new Error("Wrong email or possword");
         }
 
-        const paylod = {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-        }
-
-        const token = jwt.sign(paylod, JWT_SECRET, { expiresIn: '2h' });
-
+        const token = genereteToken(user);
         return token;
     }
 }
