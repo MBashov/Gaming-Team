@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { application, Router } from "express";
 
 import authService from "../services/authService.js";
 import { AUTH_TOKEN_NAME } from "../../config.js";
@@ -32,6 +32,11 @@ authController.post('/register', async (req, res) => {
     res.cookie(AUTH_TOKEN_NAME, token, { httpOnly: true });
     res.redirect('/');
 
+});
+
+authController.get('/logout', (req, res) => {
+    res.clearCookie(AUTH_TOKEN_NAME);
+    res.redirect('/');
 });
 
 export default authController;
