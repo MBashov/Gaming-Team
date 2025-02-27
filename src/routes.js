@@ -9,4 +9,8 @@ routes.use(homeController);
 routes.use('/auth', authController);
 routes.use('/games', gameController);
 
+routes.all('*', (req, res) => {
+    res.render('404');
+});
+
 export default routes;
