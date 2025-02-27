@@ -6,5 +6,8 @@ export default {
     },
     getAll() {
         return Game.find();
+    },
+    getOne(id) {
+        return Game.findById(id);
     }
 }

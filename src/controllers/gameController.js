@@ -17,6 +17,18 @@ gameController.get('/catalog', async (req, res) => {
     }
 });
 
+gameController.get('/:gameId/details', async (req, res) => {
+    const gameId = req.params.gameId;
+
+    try {
+        const game = await gameService.getOne(gameId);
+        res.render('games/details', { game });
+
+    } catch (err) {
+
+    }
+});
+
 gameController.get('/create', isAuth, (req, res) => {
     const platformTypes = getPlatformTypes();
     res.render('games/create', { platformTypes });
