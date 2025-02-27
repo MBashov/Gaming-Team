@@ -1,4 +1,4 @@
-import { Router } from "express";
+import e, { Router } from "express";
 import gameService from "../services/gameService.js";
 import { isAuth } from "../middlewares/authMiddleware.js";
 import { getErrorMessage } from "../utils/errorUtils.js";
@@ -51,5 +51,16 @@ gameController.post('/create', isAuth, async (req, res) => {
         res.render('games/create', { game: gameData, platformTypes, error: getErrorMessage(err) });
     }
 });
+
+gameController.get('/:gameId/buy', isAuth, async (req, res) => {
+    const gameId = req.params.gameId;
+
+    try {
+        await gameService.buy(gameId, req.user.id);
+    } catch (err) {
+        res.setError(getErrorMessage(err));
+    }
+    res.redirect(`/games/${gameId}/details`);
+}); 
 
 export default gameController;

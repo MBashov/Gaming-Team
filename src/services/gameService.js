@@ -2,12 +2,28 @@ import Game from "../models/Game.js";
 
 export default {
     create(gameData, userId) {
-        return Game.create({...gameData, owner: userId});
+        return Game.create({ ...gameData, owner: userId });
     },
     getAll() {
         return Game.find();
     },
-    getOne(id) {
-        return Game.findById(id);
+    getOne(gameId) {
+        return Game.findById(gameId);
+    },
+    async buy(gameId, userId) {
+        const game = await this.getOne(gameId);
+
+        if (game.boughtBy.includes(userId)) {
+            throw new Error('You have already bought this game');
+        }
+
+        if (game.owner.equals(userId)) {
+            throw new Error('You are not authorized for this action!');
+        }
+
+        game.boughtBy.push(userId);
+
+        return await game.save();
+
     }
 }
