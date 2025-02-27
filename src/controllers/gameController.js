@@ -23,4 +23,8 @@ gameController.post('/create', isAuth, async (req, res) => {
     }
 });
 
+gameController.get('/catalog', (req, res) => {
+    res.render('games/catalog');
+});
+
 export default gameController;
