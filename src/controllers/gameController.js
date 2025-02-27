@@ -6,7 +6,18 @@ import getPlatformTypes from "../utils/getPlatformTypes.js";
 
 const gameController = Router();
 
-gameController.get('/create', (req, res) => {
+gameController.get('/catalog', async (req, res) => {
+    try {
+        const games = await gameService.getAll();
+
+        res.render('games/catalog', { games });
+    } catch (err) {
+        res.setError(getErrorMessage(err));
+        res.redirect('/404');
+    }
+});
+
+gameController.get('/create', isAuth, (req, res) => {
     const platformTypes = getPlatformTypes();
     res.render('games/create', { platformTypes });
 });
@@ -16,15 +27,11 @@ gameController.post('/create', isAuth, async (req, res) => {
 
     try {
         await gameService.create(gameData, req.user.id);
-        res.redirect('/catalg');
+        res.redirect('/games/catalog');
     } catch (err) {
         const platformTypes = getPlatformTypes(gameData.platform);
         res.render('games/create', { game: gameData, platformTypes, error: getErrorMessage(err) });
     }
-});
-
-gameController.get('/catalog', (req, res) => {
-    res.render('games/catalog');
 });
 
 export default gameController;
