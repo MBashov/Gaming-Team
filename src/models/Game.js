@@ -13,7 +13,7 @@ const gameSchema = new Schema({
     },
     price: {
         type: Number,
-        required: true,
+        required: [true, 'Price is required!'],
         min: [0, 'Price should be positive number']
     },
     description: {
