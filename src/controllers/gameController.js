@@ -22,10 +22,16 @@ gameController.get('/:gameId/details', async (req, res) => {
 
     try {
         const game = await gameService.getOne(gameId);
-        res.render('games/details', { game });
+
+        const isOwner = game.owner.equals(req.user?.id);
+
+        const isBought = game.boughtBy.includes(req.user?.id);
+
+        res.render('games/details', { game, isOwner, isBought });
 
     } catch (err) {
-
+        setError(getErrorMessage(err));
+        res.redirect('404');
     }
 });
 
