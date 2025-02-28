@@ -10,7 +10,7 @@ gameController.get('/catalog', async (req, res) => {
     try {
         const games = await gameService.getAll();
 
-        res.render('games/catalog', { games });
+        res.render('game/catalog', { games });
     } catch (err) {
         res.setError(getErrorMessage(err));
         res.redirect('/404');
@@ -27,7 +27,7 @@ gameController.get('/:gameId/details', async (req, res) => {
 
         const isBought = game.boughtBy.includes(req.user?.id);
 
-        res.render('games/details', { game, isOwner, isBought });
+        res.render('game/details', { game, isOwner, isBought });
 
     } catch (err) {
         res.setError(getErrorMessage(err));
@@ -37,7 +37,7 @@ gameController.get('/:gameId/details', async (req, res) => {
 
 gameController.get('/create', isAuth, (req, res) => {
     const platformTypes = getPlatformTypes();
-    res.render('games/create', { platformTypes });
+    res.render('game/create', { platformTypes });
 });
 
 gameController.post('/create', isAuth, async (req, res) => {
@@ -48,7 +48,7 @@ gameController.post('/create', isAuth, async (req, res) => {
         res.redirect('/games/catalog');
     } catch (err) {
         const platformTypes = getPlatformTypes(gameData.platform);
-        res.render('games/create', { game: gameData, platformTypes, error: getErrorMessage(err) });
+        res.render('game/create', { game: gameData, platformTypes, error: getErrorMessage(err) });
     }
 });
 
@@ -82,12 +82,12 @@ gameController.get('/:gameId/edit', isAuth, async (req, res) => {
     try {
         const game = await gameService.getOne(gameId);
 
-        if(!game.owner.equals(req.user.id)) {
+        if (!game.owner.equals(req.user.id)) {
             throw new Error('You are not authorized for this action');
         }
-        
+
         const platformTypes = getPlatformTypes(game.platform);
-        res.render('games/edit', { game, platformTypes });
+        res.render('game/edit', { game, platformTypes });
 
     } catch (err) {
         res.setError(getErrorMessage(err));
@@ -103,7 +103,7 @@ gameController.post('/:gameId/edit', isAuth, async (req, res) => {
     try {
         const game = await gameService.getOne(gameId);
 
-        if(!game.owner.equals(req.user.id)) {
+        if (!game.owner.equals(req.user.id)) {
             throw new Error('You are not authorized for this action');
         }
 
@@ -111,8 +111,18 @@ gameController.post('/:gameId/edit', isAuth, async (req, res) => {
         res.redirect(`/games/${gameId}/details`);
     } catch (err) {
         const platformTypes = getPlatformTypes(gameData.platform);
-        res.render('games/edit', { game: gameData, platformTypes, error: getErrorMessage(err) });
+        res.render('game/edit', { game: gameData, platformTypes, error: getErrorMessage(err) });
     }
 });
+
+gameController.get('/search', async (req, res) => {
+
+    try {
+        const games = await gameService.getAll();
+        res.render('game/search', { games });
+    } catch (err) {
+        
+    }
+})
 
 export default gameController;
