@@ -1,4 +1,4 @@
-import e, { Router } from "express";
+import { Router } from "express";
 import gameService from "../services/gameService.js";
 import { isAuth } from "../middlewares/authMiddleware.js";
 import { getErrorMessage } from "../utils/errorUtils.js";
@@ -116,13 +116,16 @@ gameController.post('/:gameId/edit', isAuth, async (req, res) => {
 });
 
 gameController.get('/search', async (req, res) => {
+    const { name, platformType } = req.query;
+    const platformTypes = getPlatformTypes(platformType);
 
     try {
-        const games = await gameService.getAll();
-        res.render('game/search', { games });
+        const games = await gameService.getAll({ name, platformType });
+        res.render('game/search', { games, platformTypes });
     } catch (err) {
-        
+        res.setError(getErrorMessage(err));
+        res.redirect('/404');
     }
-})
+});
 
 export default gameController;

@@ -4,8 +4,18 @@ export default {
     create(gameData, userId) {
         return Game.create({ ...gameData, owner: userId });
     },
-    getAll() {
-        return Game.find();
+    getAll(filter = {}) {
+        let query = Game.find();
+
+        if (filter.name) {
+            query = query.find({ name: { $regex: filter.name, $options: 'i' } });
+        }
+
+        if (filter.platformType) {
+            query = query.find({ platform: filter.platformType });
+        }
+
+        return query;
     },
     getOne(gameId) {
         return Game.findById(gameId);
