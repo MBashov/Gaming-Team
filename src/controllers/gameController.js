@@ -30,7 +30,7 @@ gameController.get('/:gameId/details', async (req, res) => {
         res.render('games/details', { game, isOwner, isBought });
 
     } catch (err) {
-        setError(getErrorMessage(err));
+        res.setError(getErrorMessage(err));
         res.redirect('404');
     }
 });
@@ -62,5 +62,18 @@ gameController.get('/:gameId/buy', isAuth, async (req, res) => {
     }
     res.redirect(`/games/${gameId}/details`);
 }); 
+
+gameController.get('/:gameId/delete', isAuth, async (req, res) => {
+    const gameId = req.params.gameId;
+
+    try {
+        await gameService.delete(gameId, req.user.id);
+        res.redirect('/games/catalog');
+    } catch (err) {
+        res.setError(getErrorMessage(err));
+        res.redirect(`/games/${gameId}/details`);
+    }
+
+});
 
 export default gameController;

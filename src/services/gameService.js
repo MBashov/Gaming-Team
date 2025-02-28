@@ -14,7 +14,7 @@ export default {
         const game = await this.getOne(gameId);
 
         if (game.boughtBy.includes(userId)) {
-            throw new Error('You have already bought this game');
+            throw new Error('You have already bought this offer');
         }
 
         if (game.owner.equals(userId)) {
@@ -25,5 +25,14 @@ export default {
 
         return await game.save();
 
+    },
+    async delete(gameId, userId) {
+        const game = await this.getOne(gameId);
+        
+        if (!game.owner.equals(userId)) {
+            throw new Error('You are not authorized for this action!');
+        }
+
+        await Game.findByIdAndDelete(gameId);
     }
 }
