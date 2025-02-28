@@ -28,11 +28,15 @@ export default {
     },
     async delete(gameId, userId) {
         const game = await this.getOne(gameId);
-        
+
         if (!game.owner.equals(userId)) {
             throw new Error('You are not authorized for this action!');
         }
 
         await Game.findByIdAndDelete(gameId);
+    },
+
+    update(gameId, gameData) {
+        return Game.findByIdAndUpdate(gameId, gameData, { runValidators: true });
     }
 }

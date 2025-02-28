@@ -96,4 +96,23 @@ gameController.get('/:gameId/edit', isAuth, async (req, res) => {
 
 });
 
+gameController.post('/:gameId/edit', isAuth, async (req, res) => {
+    const gameId = req.params.gameId;
+    const gameData = req.body;
+
+    try {
+        const game = await gameService.getOne(gameId);
+
+        if(!game.owner.equals(req.user.id)) {
+            throw new Error('You are not authorized for this action');
+        }
+
+        await gameService.update(gameId, gameData);
+        res.redirect(`/games/${gameId}/details`);
+    } catch (err) {
+        const platformTypes = getPlatformTypes(gameData.platform);
+        res.render('games/edit', { game: gameData, platformTypes, error: getErrorMessage(err) });
+    }
+});
+
 export default gameController;
