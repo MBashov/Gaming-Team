@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is designed to practice Node.js skills by building a fully functional game store 🛒 web application. The goal is to integrate front-end structures with back-end logic using JavaScript to create a seamless user experience and a fully operational online game store.
+This project is designed to practice Node.js skills by building a fully functional game store 🛒🎮 web application. The goal is to integrate front-end structures with back-end logic using JavaScript to create a seamless user experience and a fully operational online game store.
 
 ---
 
